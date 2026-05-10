@@ -26,11 +26,9 @@ public class Order {
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-/* TODO: Uncomment when OrderDetail entity is created
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<OrderDetail> orderDetails; */
+    private List<OrderDetail> orderDetails;
 
-    @NotNull(message = "Total amount is required")
     @Column(name = "total_amount", nullable = false)
     private Double totalAmount;
 
