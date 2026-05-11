@@ -12,6 +12,7 @@ import org.pruebatecnica.paymentservice.repository.PaymentRepository;
 import org.pruebatecnica.paymentservice.service.PaymentService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -43,5 +44,13 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new PaymentNotFoundException("Payment not found"));
         return paymentMapper.toPaymentResponseDto(payment);
+    }
+
+    @Override
+    public List<PaymentResponseDto> getAllPayments() {
+        return paymentRepository.findAll()
+                .stream()
+                .map(paymentMapper::toPaymentResponseDto)
+                .toList();
     }
 }
