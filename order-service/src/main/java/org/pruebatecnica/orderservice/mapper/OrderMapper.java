@@ -1,5 +1,8 @@
 package org.pruebatecnica.orderservice.mapper;
 
+import org.pruebatecnica.orderservice.dto.request.CustomerRequestDto;
+import org.pruebatecnica.orderservice.dto.request.OrderDetailRequestDto;
+import org.pruebatecnica.orderservice.dto.request.OrderRequestDto;
 import org.pruebatecnica.orderservice.dto.response.CustomerResponseDto;
 import org.pruebatecnica.orderservice.dto.response.OrderDetailResponseDto;
 import org.pruebatecnica.orderservice.dto.response.OrderResponseDto;
@@ -11,12 +14,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OrderMapper {
-    public OrderResponseDto toOrderDto(Order order) {
+    public OrderResponseDto toOrderResponseDto(Order order) {
         return OrderResponseDto.builder()
                 .id(order.getId())
-                .customer(toCustomerDto(order.getCustomer()))
+                .customer(toCustomerResponseDto(order.getCustomer()))
                 .orderDetailDtos(order.getOrderDetails().stream()
-                        .map(this::toOrderDetailDto)
+                        .map(this::toOrderDetailResponseDto)
                         .toList())
                 .totalAmount(order.getTotalAmount())
                 .status(order.getStatus().toString())
@@ -25,21 +28,18 @@ public class OrderMapper {
                 .build();
     }
 
-    public Order toOrder(OrderResponseDto orderDto) {
+    public Order toOrder(OrderRequestDto orderRequestDto) {
         return Order.builder()
-                .id(orderDto.getId())
-                .customer(toCustomer(orderDto.getCustomer()))
-                .orderDetails(orderDto.getOrderDetailDtos().stream()
+                .customer(toCustomer(orderRequestDto.getCustomer()))
+                .orderDetails(orderRequestDto.getOrderDetailDtos().stream()
                         .map(this::toOrderDetail)
                         .toList())
-                .totalAmount(orderDto.getTotalAmount())
-                .status(OrderStatus.valueOf(orderDto.getStatus()))
-                .createdAt(orderDto.getCreatedAt())
-                .updatedAt(orderDto.getUpdatedAt())
+                .totalAmount(0.0)
+                .status(OrderStatus.valueOf(orderRequestDto.getStatus()))
                 .build();
     }
 
-    public OrderDetailResponseDto toOrderDetailDto(OrderDetail orderDetail) {
+    public OrderDetailResponseDto toOrderDetailResponseDto(OrderDetail orderDetail) {
         return OrderDetailResponseDto.builder()
                 .id(orderDetail.getId())
                 .productId(orderDetail.getProductId())
@@ -49,17 +49,14 @@ public class OrderMapper {
                 .build();
     }
 
-    public OrderDetail toOrderDetail(OrderDetailResponseDto orderDetailDto) {
+    public OrderDetail toOrderDetail(OrderDetailRequestDto orderDetailDto) {
         return OrderDetail.builder()
-                .id(orderDetailDto.getId())
                 .productId(orderDetailDto.getProductId())
-                .productTitle(orderDetailDto.getProductTitle())
-                .productPrice(orderDetailDto.getProductPrice())
                 .quantity(orderDetailDto.getQuantity())
                 .build();
     }
 
-    public CustomerResponseDto toCustomerDto(Customer customer) {
+    public CustomerResponseDto toCustomerResponseDto(Customer customer) {
         return CustomerResponseDto.builder()
                 .id(customer.getId())
                 .fullName(customer.getFullName())
@@ -68,9 +65,8 @@ public class OrderMapper {
                 .build();
     }
 
-    public Customer toCustomer(CustomerResponseDto customerDto) {
+    public Customer toCustomer(CustomerRequestDto customerDto) {
         return Customer.builder()
-                .id(customerDto.getId())
                 .fullName(customerDto.getFullName())
                 .email(customerDto.getEmail())
                 .address(customerDto.getAddress())

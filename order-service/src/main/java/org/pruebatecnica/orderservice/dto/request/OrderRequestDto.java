@@ -1,7 +1,6 @@
 package org.pruebatecnica.orderservice.dto.request;
 
 import lombok.*;
-import org.pruebatecnica.orderservice.dto.response.CustomerResponseDto;
 
 import java.util.List;
 
