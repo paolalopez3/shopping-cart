@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -26,5 +27,10 @@ public class PaymentController {
     @GetMapping("/{id}")
     public ResponseEntity<PaymentResponseDto> getPaymentById(@PathVariable UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.getPaymentById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PaymentResponseDto>> getAllPayments() {
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.getAllPayments());
     }
 }
