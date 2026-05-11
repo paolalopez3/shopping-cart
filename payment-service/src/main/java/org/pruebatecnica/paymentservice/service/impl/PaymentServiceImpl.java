@@ -5,6 +5,7 @@ import org.pruebatecnica.paymentservice.dto.request.PaymentRequestDto;
 import org.pruebatecnica.paymentservice.dto.response.PaymentResponseDto;
 import org.pruebatecnica.paymentservice.entity.Payment;
 import org.pruebatecnica.paymentservice.entity.enums.PaymentStatus;
+import org.pruebatecnica.paymentservice.exception.PaymentNotFoundException;
 import org.pruebatecnica.paymentservice.mapper.PaymentMapper;
 import org.pruebatecnica.paymentservice.repository.PaymentRepository;
 import org.pruebatecnica.paymentservice.service.PaymentService;
@@ -36,7 +37,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentResponseDto getPaymentById(UUID id) {
-        Payment payment = paymentRepository.findById(id).orElse(null);
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() -> new PaymentNotFoundException("Payment not found"));
         return paymentMapper.toPaymentResponseDto(payment);
     }
 }
