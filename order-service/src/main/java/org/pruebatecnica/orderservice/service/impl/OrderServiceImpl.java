@@ -69,39 +69,30 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDto updateOrder(UUID id, OrderRequestDto orderRequestDto) {
         Order existingOrder = orderRepository.findById(id)
                 .orElseThrow(() ->
-                        new OrderNotFoundException(
-                                "Order not found"
-                        )
+                        new OrderNotFoundException("Order not found")
                 );
         existingOrder.setCustomer(
-                orderMapper.toCustomer(
-                        orderRequestDto.getCustomer()
-                )
+                orderMapper.toCustomer(orderRequestDto.getCustomer())
         );
         existingOrder.getOrderDetails().clear();
         double total = 0;
-        List<OrderDetail> updatedDetails =
+        for (OrderDetail detail :
                 orderRequestDto.getOrderDetailDtos()
                         .stream()
                         .map(orderMapper::toOrderDetail)
-                        .toList();
-
-        for (OrderDetail detail : updatedDetails) {
+                        .toList()) {
             ProductResponseDto product =
-                    productClient.getProductById(
-                            detail.getProductId()
-                    );
+                    productClient.getProductById(detail.getProductId());
             detail.setProductTitle(product.getTitle());
             detail.setProductPrice(product.getPrice());
-            double subtotal =
-                    product.getPrice() * detail.getQuantity();
+            double subtotal = product.getPrice() * detail.getQuantity();
             total += subtotal;
             detail.setOrder(existingOrder);
+            existingOrder.getOrderDetails().add(detail);
         }
-        existingOrder.setOrderDetails(updatedDetails);
         existingOrder.setTotalAmount(total);
-        Order updatedOrder =
-                orderRepository.save(existingOrder);
+
+        Order updatedOrder = orderRepository.save(existingOrder);
         return orderMapper.toOrderResponseDto(updatedOrder);
     }
 
