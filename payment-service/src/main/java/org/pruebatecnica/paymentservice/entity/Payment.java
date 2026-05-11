@@ -30,14 +30,14 @@ public class Payment {
     private PaymentStatus paymentStatus;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime payedAt;
+    private LocalDateTime paidAt;
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
-        payedAt = LocalDateTime.now();
+        paidAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
         if (paymentStatus == null) {
             paymentStatus = PaymentStatus.PENDING;
