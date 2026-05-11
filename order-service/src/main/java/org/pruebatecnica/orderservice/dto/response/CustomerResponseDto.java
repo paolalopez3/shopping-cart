@@ -1,4 +1,4 @@
-package org.pruebatecnica.orderservice.dto;
+package org.pruebatecnica.orderservice.dto.response;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CustomerDto {
+public class CustomerResponseDto {
     private UUID id;
     private String fullName;
     private String email;

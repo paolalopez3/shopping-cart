@@ -1,4 +1,4 @@
-package org.pruebatecnica.orderservice.dto;
+package org.pruebatecnica.orderservice.dto.response;
 
 import lombok.*;
 
@@ -11,10 +11,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderDto {
+public class OrderResponseDto {
     private UUID id;
-    private CustomerDto customer;
-    private List<OrderDetailDto> orderDetailDtos;
+    private CustomerResponseDto customer;
+    private List<OrderDetailResponseDto> orderDetailDtos;
     private Double totalAmount;
     private String status;
     private LocalDateTime createdAt;

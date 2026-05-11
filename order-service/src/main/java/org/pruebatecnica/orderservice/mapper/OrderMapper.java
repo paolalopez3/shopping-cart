@@ -1,8 +1,8 @@
 package org.pruebatecnica.orderservice.mapper;
 
-import org.pruebatecnica.orderservice.dto.CustomerDto;
-import org.pruebatecnica.orderservice.dto.OrderDetailDto;
-import org.pruebatecnica.orderservice.dto.OrderDto;
+import org.pruebatecnica.orderservice.dto.response.CustomerResponseDto;
+import org.pruebatecnica.orderservice.dto.response.OrderDetailResponseDto;
+import org.pruebatecnica.orderservice.dto.response.OrderResponseDto;
 import org.pruebatecnica.orderservice.entity.Customer;
 import org.pruebatecnica.orderservice.entity.Order;
 import org.pruebatecnica.orderservice.entity.OrderDetail;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OrderMapper {
-    public OrderDto toOrderDto(Order order) {
-        return OrderDto.builder()
+    public OrderResponseDto toOrderDto(Order order) {
+        return OrderResponseDto.builder()
                 .id(order.getId())
                 .customer(toCustomerDto(order.getCustomer()))
                 .orderDetailDtos(order.getOrderDetails().stream()
@@ -25,7 +25,7 @@ public class OrderMapper {
                 .build();
     }
 
-    public Order toOrder(OrderDto orderDto) {
+    public Order toOrder(OrderResponseDto orderDto) {
         return Order.builder()
                 .id(orderDto.getId())
                 .customer(toCustomer(orderDto.getCustomer()))
@@ -39,8 +39,8 @@ public class OrderMapper {
                 .build();
     }
 
-    public OrderDetailDto toOrderDetailDto(OrderDetail orderDetail) {
-        return OrderDetailDto.builder()
+    public OrderDetailResponseDto toOrderDetailDto(OrderDetail orderDetail) {
+        return OrderDetailResponseDto.builder()
                 .id(orderDetail.getId())
                 .productId(orderDetail.getProductId())
                 .productTitle(orderDetail.getProductTitle())
@@ -49,7 +49,7 @@ public class OrderMapper {
                 .build();
     }
 
-    public OrderDetail toOrderDetail(OrderDetailDto orderDetailDto) {
+    public OrderDetail toOrderDetail(OrderDetailResponseDto orderDetailDto) {
         return OrderDetail.builder()
                 .id(orderDetailDto.getId())
                 .productId(orderDetailDto.getProductId())
@@ -59,8 +59,8 @@ public class OrderMapper {
                 .build();
     }
 
-    public CustomerDto toCustomerDto(Customer customer) {
-        return CustomerDto.builder()
+    public CustomerResponseDto toCustomerDto(Customer customer) {
+        return CustomerResponseDto.builder()
                 .id(customer.getId())
                 .fullName(customer.getFullName())
                 .email(customer.getEmail())
@@ -68,7 +68,7 @@ public class OrderMapper {
                 .build();
     }
 
-    public Customer toCustomer(CustomerDto customerDto) {
+    public Customer toCustomer(CustomerResponseDto customerDto) {
         return Customer.builder()
                 .id(customerDto.getId())
                 .fullName(customerDto.getFullName())
