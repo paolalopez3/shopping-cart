@@ -10,6 +10,6 @@ public interface OrderService {
     OrderResponseDto createOrder(OrderRequestDto orderRequestDto);
     List<OrderResponseDto> getAllOrders();
     OrderResponseDto getOrderById(UUID id);
-    void updateOrder(OrderRequestDto orderRequestDto);
+    OrderResponseDto updateOrder(UUID id, OrderRequestDto orderRequestDto);
     void deleteOrder(UUID id);
 }
