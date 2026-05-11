@@ -6,6 +6,7 @@ import org.pruebatecnica.paymentservice.dto.request.PaymentRequestDto;
 import org.pruebatecnica.paymentservice.dto.response.PaymentResponseDto;
 import org.pruebatecnica.paymentservice.entity.Payment;
 import org.pruebatecnica.paymentservice.entity.enums.PaymentStatus;
+import org.pruebatecnica.paymentservice.exception.PaymentAlreadyMadeException;
 import org.pruebatecnica.paymentservice.exception.PaymentNotFoundException;
 import org.pruebatecnica.paymentservice.mapper.PaymentMapper;
 import org.pruebatecnica.paymentservice.repository.PaymentRepository;
@@ -24,6 +25,11 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentResponseDto makePayment(PaymentRequestDto paymentRequestDto) {
+        paymentRepository.findByOrderId(paymentRequestDto.getOrderId())
+                .ifPresent(payment -> {
+                    throw new PaymentAlreadyMadeException("Payment already made");
+                });
+
         Payment payment = Payment.builder()
                 .orderId(paymentRequestDto.getOrderId())
                 .paymentStatus(PaymentStatus.PENDING)

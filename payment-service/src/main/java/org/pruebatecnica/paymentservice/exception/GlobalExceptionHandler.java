@@ -13,4 +13,11 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(e.getMessage());
     }
+
+    @ExceptionHandler(PaymentAlreadyMadeException.class)
+    public ResponseEntity<String> handle(PaymentAlreadyMadeException e) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(e.getMessage());
+    }
 }
