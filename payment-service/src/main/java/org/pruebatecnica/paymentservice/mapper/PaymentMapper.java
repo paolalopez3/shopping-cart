@@ -5,8 +5,6 @@ import org.pruebatecnica.paymentservice.dto.response.PaymentResponseDto;
 import org.pruebatecnica.paymentservice.entity.Payment;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 public class PaymentMapper {
     public Payment toPayment(PaymentRequestDto paymentRequestDto) {
