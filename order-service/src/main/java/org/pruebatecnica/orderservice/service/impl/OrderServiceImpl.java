@@ -8,6 +8,7 @@ import org.pruebatecnica.orderservice.dto.response.OrderResponseDto;
 import org.pruebatecnica.orderservice.dto.response.ProductResponseDto;
 import org.pruebatecnica.orderservice.entity.Order;
 import org.pruebatecnica.orderservice.entity.OrderDetail;
+import org.pruebatecnica.orderservice.exception.OrderNotFoundException;
 import org.pruebatecnica.orderservice.mapper.OrderMapper;
 import org.pruebatecnica.orderservice.repository.OrderRepository;
 import org.pruebatecnica.orderservice.service.OrderService;
@@ -55,7 +56,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponseDto getOrderById(UUID id) {
-        Order order = orderRepository.findById(id).orElse(null);
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() ->
+                        new OrderNotFoundException(
+                                "Order not found")
+
+        );
         return orderMapper.toOrderResponseDto(order);
     }
 
@@ -63,8 +69,8 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDto updateOrder(UUID id, OrderRequestDto orderRequestDto) {
         Order existingOrder = orderRepository.findById(id)
                 .orElseThrow(() ->
-                        new EntityNotFoundException(
-                                "Order with id " + id + " not found"
+                        new OrderNotFoundException(
+                                "Order not found"
                         )
                 );
         existingOrder.setCustomer(
@@ -103,8 +109,8 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrder(UUID id) {
         Order existingOrder = orderRepository.findById(id)
                 .orElseThrow(() ->
-                        new EntityNotFoundException(
-                                "Order with id " + id + " not found"
+                        new OrderNotFoundException(
+                                "Order not found"
                         )
                 );
         orderRepository.delete(existingOrder);
