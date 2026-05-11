@@ -22,7 +22,7 @@ public class Order {
     private UUID id;
 
     @NotNull(message = "Customer is required")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
